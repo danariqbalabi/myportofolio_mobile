@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
-  final String npm = '2406000001';
-  final String nama = 'Burhan';
-  final String kelas = 'PBP A';
+  final String npm = '2506534371';
+  final String nama = 'Danar Iqbal Abi Zaidan S';
+  final String kelas = 'PBP-A';
 
   final List<ItemHomepage> items = const [
-    ItemHomepage('Lihat Proyek', Icons.folder),
-    ItemHomepage('Tambah Proyek', Icons.add_circle),
-    ItemHomepage('Logout', Icons.logout),
+    ItemHomepage('Lihat Proyek', Icons.folder, Color(0xFF1D4ED8)),
+    ItemHomepage('Tambah Proyek', Icons.add_circle, Color(0xFF047857)),
+    ItemHomepage('Logout', Icons.logout, Color(0xFFB91C1C)),
   ];
 
   @override
@@ -43,10 +43,13 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              const Text(
-                'Selamat datang di MyPortfolio Mobile!',
+              Text(
+                'Selamat datang di portofolio $nama!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
               GridView.count(
                 primary: false,
@@ -94,8 +97,9 @@ class InfoCard extends StatelessWidget {
 class ItemHomepage {
   final String name;
   final IconData icon;
+  final Color color;
 
-  const ItemHomepage(this.name, this.icon);
+  const ItemHomepage(this.name, this.icon, this.color);
 }
 
 class ItemCard extends StatelessWidget {
@@ -106,7 +110,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.secondary,
+      color: item.color,
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
