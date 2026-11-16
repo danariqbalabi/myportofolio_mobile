@@ -78,6 +78,23 @@ flutter build web
 
 Tes widget memeriksa identitas pribadi dan ketiadaan data contoh Burhan, tiga warna unik yang benar-benar dipakai kartu, kontras teks minimal 4.5:1, pesan SnackBar setiap menu, serta interaksi pada layar 320 x 568 dan 568 x 320. Build web menghasilkan berkas di `build/web/`; folder hasil build tidak masuk Git.
 
+Hasil pemeriksaan Tugas 7 pada 16 November 2026:
+
+| Pemeriksaan | Hasil |
+| --- | --- |
+| Dart formatter | Tidak ada perubahan format yang diperlukan |
+| `flutter analyze` | No issues found |
+| `flutter test` | 5 tes lolos |
+| Build web dengan optimasi ringan | Berhasil |
+
+Build release standar sempat gagal karena compiler kehabisan memori pada mesin pengerjaan. Build berhasil dijalankan ulang dengan perintah berikut tanpa mengubah kode aplikasi:
+
+```sh
+flutter build web --no-wasm-dry-run -O1
+```
+
+Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run` melewati kompilasi uji WebAssembly. Preview visual di browser belum berhasil dijalankan karena runtime otomatisasi terkena keterbatasan paging file Windows; validasi layout saat ini mengandalkan tes widget.
+
 ## Pertanyaan reflektif
 
 ### Tugas 7
