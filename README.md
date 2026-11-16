@@ -182,10 +182,8 @@ Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run`
 
 Pengerjaan proyek ini dibantu **ChatGPT/Codex**. Bantuan AI dipakai untuk membaca ketentuan tugas, mengubah kode Flutter, menyusun tes widget, membuat draf jawaban reflektif dan dokumentasi, serta menjalankan alur commit dan push bertahap.
 
-Strategi prompting yang dipakai adalah memberikan PDF tugas dan konteks proyek yang sudah ada, lalu meminta implementasi di branch terpisah, pesan commit berbahasa Indonesia lowercase, README yang rapi, dan pencantuman log chat. Ketentuan tugas dicocokkan dengan implementasi, lalu hasilnya diperiksa menggunakan formatter, `flutter analyze`, tes widget, dan build web.
+Strategi prompting yang dipakai adalah memberikan PDF tugas dan konteks proyek yang sudah ada, lalu meminta langkah implementasi di branch terpisah. Ketentuan tugas dicocokkan dengan implementasi, lalu hasilnya diperiksa menggunakan formatter, `flutter analyze`, tes widget, dan build web.
 
-Penyesuaian pada hasil bantuan AI di tugas ini mencakup penggantian identitas contoh sesuai konfirmasi langsung pemilik proyek, pemindahan warna tombol ke atribut model `ItemHomepage`, serta pemilihan warna yang diuji kontrasnya terhadap teks putih. Pengujian profil dan layout juga disesuaikan agar memakai nama lengkap, bukan data contoh tutorial. Perubahan tersebut merupakan bagian dari pengerjaan yang dibantu AI, bukan klaim bahwa semuanya dilakukan manual tanpa AI.
-
-AI bisa salah memahami kebutuhan, mengisi data contoh, atau memberi penjelasan yang terdengar meyakinkan tetapi kurang tepat. Karena itu, jawaban konsep dilengkapi rujukan dokumentasi Flutter, data identitas disesuaikan dengan konfirmasi pemilik proyek, dan perilaku aplikasi diuji. Tes widget dan build web juga belum membuktikan tampilan serta perilaku pada setiap perangkat Android/iOS; pemeriksaan perangkat nyata tetap berguna.
+Penyesuaian pada hasil bantuan AI di tugas ini mencakup penggantian identitas contoh sesuai konfirmasi langsung pemilik proyek, pemindahan warna tombol ke atribut model `ItemHomepage`, serta pemilihan warna yang diuji kontrasnya terhadap teks putih. Pengujian profil dan layout juga disesuaikan agar memakai nama lengkap, bukan data contoh tutorial. Perubahan mix manual dan dibantu AI Codex.
 
 Log chat yang disertakan: [percakapan ChatGPT](https://chatgpt.com/s/cx_6afa76f5fab08191bb0b49500c93a199).
