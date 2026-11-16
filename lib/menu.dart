@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
-  final String npm = '2406000001';
-  final String nama = 'Burhan';
+  final String npm = '2506534371';
+  final String nama = 'Danar Iqbal Abi Zaidan Suharso';
   final String kelas = 'PBP A';
 
   final List<ItemHomepage> items = const [
@@ -43,10 +43,13 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              const Text(
-                'Selamat datang di MyPortfolio Mobile!',
+              Text(
+                'Selamat datang di portofolio $nama!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
               GridView.count(
                 primary: false,

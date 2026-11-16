@@ -25,7 +25,7 @@ void main() {
     }
   });
 
-  testWidgets('Home displays the tutorial profile and all menu actions', (
+  testWidgets('Beranda menampilkan identitas pribadi dan semua menu', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MyApp());
@@ -33,22 +33,24 @@ void main() {
     for (final text in [
       'MyPortfolio',
       'NPM',
-      '2406000001',
+      '2506534371',
       'Name',
-      'Burhan',
+      'Danar Iqbal Abi Zaidan Suharso',
       'Class',
       'PBP A',
-      'Selamat datang di MyPortfolio Mobile!',
+      'Selamat datang di portofolio Danar Iqbal Abi Zaidan Suharso!',
       'Lihat Proyek',
       'Tambah Proyek',
       'Logout',
     ]) {
       expect(find.text(text), findsOneWidget);
     }
+    expect(find.text('Burhan'), findsNothing);
+    expect(find.text('2406000001'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Each menu action displays its matching SnackBar', (
+  testWidgets('Pesan SnackBar sesuai tombol yang ditekan', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MyApp());
@@ -65,7 +67,7 @@ void main() {
   });
 
   for (final size in [const Size(320, 568), const Size(568, 320)]) {
-    testWidgets('Menu fits and remains usable at $size', (
+    testWidgets('Menu tetap muat dan bisa ditekan di layar $size', (
       WidgetTester tester,
     ) async {
       tester.view.physicalSize = size;
