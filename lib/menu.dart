@@ -4,8 +4,8 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   final String npm = '2506534371';
-  final String nama = 'Danar Iqbal Abi Zaidan Suharso';
-  final String kelas = 'PBP A';
+  final String nama = 'Danar Iqbal Abi Zaidan S';
+  final String kelas = 'PBP-A';
 
   final List<ItemHomepage> items = const [
     ItemHomepage('Lihat Proyek', Icons.folder, Color(0xFF1D4ED8)),
