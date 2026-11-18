@@ -1,6 +1,6 @@
 # MyPortfolio Mobile
 
-Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berbasis Platform, Gasal 2026/2027. Proyek ini melanjutkan Tutorial 08 ke Tugas 7: profil contoh diganti dengan identitas pribadi dan tiap menu diberi warna sendiri.
+Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berbasis Platform, Gasal 2026/2027. Proyek ini melanjutkan Tutorial 08 dan Tugas 7 dengan navigasi, drawer, serta form proyek pada Tutorial 09.
 
 | Identitas | Keterangan |
 | --- | --- |
@@ -9,6 +9,7 @@ Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berba
 | Kelas | PBP-A |
 | Repository | [myportofolio_mobile](https://github.com/danariqbalabi/myportofolio_mobile) |
 | Branch Tugas 7 | `tugas/7-portofolio-pribadi` |
+| Branch Tutorial 09 | `tutorial/09-navigasi-form` |
 
 ## Fitur
 
@@ -25,7 +26,7 @@ Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berba
 | Tambah Proyek | Add circle | Hijau `#047857` | Kamu telah menekan tombol Tambah Proyek! |
 | Logout | Logout | Merah `#B91C1C` | Kamu telah menekan tombol Logout! |
 
-Sesuai cakupan Tugas 7, ketiga tombol masih menampilkan SnackBar. Daftar proyek, form tambah proyek, logout sungguhan, dan koneksi API Django belum diimplementasikan.
+Pada Tutorial 09, kartu Tambah Proyek menampilkan SnackBar lalu membuka form dengan `Navigator.push`. Drawer menyediakan menu Home dan Add Project melalui `Navigator.pushReplacement`. Form memvalidasi nama dan deskripsi, menyediakan lima kategori, serta menerima teknologi dan tautan opsional. Tombol Save menampilkan ringkasan seluruh input dalam dialog. Tombol OK menutup dialog dan mereset semua isian beserta kategori ke Web Development. Data diproses sementara selama halaman aktif.
 
 ## Setup dan menjalankan
 
@@ -34,7 +35,7 @@ Prasyarat: Git, Flutter SDK, serta Dart yang memenuhi `pubspec.yaml` (`^3.13.5`)
 ```sh
 git clone https://github.com/danariqbalabi/myportofolio_mobile.git
 cd myportofolio_mobile
-git switch tugas/7-portofolio-pribadi
+git switch tutorial/09-navigasi-form
 flutter pub get
 flutter doctor
 flutter run -d chrome
@@ -51,9 +52,15 @@ flutter run -d <device-id>
 ```text
 lib/
   main.dart          # entry point, MaterialApp, dan tema
-  menu.dart          # MyHomePage, InfoCard, ItemHomepage, dan ItemCard
+  screens/
+    menu.dart          # MyHomePage, InfoCard, dan ItemHomepage
+    project_form.dart  # ProjectFormPage dan state formulir
+  widgets/
+    left_drawer.dart   # drawer dengan navigasi pengganti route
+    project_card.dart  # ItemCard dan navigasi ke formulir
 test/
-  widget_test.dart   # profil, warna/kontras, SnackBar, dan layout
+  widget_test.dart       # profil, warna/kontras, SnackBar, dan navigasi kartu
+  project_form_test.dart # drawer, validasi, dialog, reset, dan layout form
 ```
 
 `ItemHomepage` menyimpan nama, ikon, dan warna sebagai data. `ItemCard` tinggal membaca `item.color`, sehingga tidak perlu rangkaian `if-else` untuk menentukan warna berdasarkan nama tombol.
@@ -64,8 +71,36 @@ test/
 | --- | --- | --- |
 | Tutorial 08 | Setup Flutter, pemisahan halaman, tema, kartu profil contoh, dan SnackBar | `tutorial/08-basic-flutter` |
 | Tugas 7 | Identitas pribadi, warna unik tiap menu, pengujian, jawaban reflektif, dan AI disclosure | `tugas/7-portofolio-pribadi` |
+| Tutorial 09 | Drawer, form proyek, validasi, dialog ringkasan, navigasi, dan refactoring screens/widgets | `tutorial/09-navigasi-form` |
 
 Tutorial 08 sudah digabungkan ke `main`. Pengerjaan Tugas 7 disimpan di branch tersendiri dengan commit dan push bertahap agar progresnya bisa ditelusuri.
+
+## Tutorial 09
+
+Branch `tutorial/09-navigasi-form` melanjutkan kode Tugas 7. Pengerjaan dipisah menjadi commit refactoring dan migrasi Material, drawer beserta form, navigasi kartu, lalu dokumentasi.
+
+Alur mencoba fitur melalui aplikasi sebagai berikut.
+
+1. Jalankan aplikasi dan tekan kartu Tambah Proyek. Form terbuka di atas beranda sehingga tombol Back sistem dapat kembali ke beranda.
+2. Tekan Save saat nama dan deskripsi kosong untuk melihat validasi. Isian yang hanya berisi spasi juga ditolak.
+3. Isi nama, deskripsi, kategori, teknologi, dan tautan. Tekan Save untuk melihat ringkasan kelima input.
+4. Tekan OK. Isian teks kembali kosong dan kategori kembali ke Web Development. Menutup dialog lewat Back mempertahankan input agar bisa dilanjutkan.
+5. Buka drawer lewat ikon menu. Pilih Home atau Add Project untuk mengganti halaman aktif.
+
+Kategori yang tersedia adalah Web Development, Mobile Development, Machine Learning, Data Science, dan Other. Teknologi serta tautan dapat dikosongkan.
+
+Impor Material aplikasi memakai `package:material_ui/material_ui.dart` sesuai tutorial. Dependensi dikunci lewat `pubspec.lock`, dan seluruh referensi halaman mengikuti direktori `screens`/`widgets`. Panduan migrasi tersedia pada [paket resmi Material UI](https://pub.dev/packages/material_ui).
+
+Tes Tutorial 09 meliputi penggantian route melalui drawer, penambahan route melalui kartu dan kembali dengan Back, validasi input, kelengkapan dialog, reset kategori dan nilai internal, submit ulang, pembatalan dialog, serta layout portrait dan landscape kecil.
+
+Hasil verifikasi Tutorial 09 pada 18 November 2026 tercatat berikut.
+
+| Pemeriksaan | Hasil |
+| --- | --- |
+| Formatter Dart | 7 berkas sudah sesuai format |
+| `flutter analyze` | No issues found |
+| `flutter test` | 11 tes lolos |
+| `flutter build web --no-wasm-dry-run -O1` | Berhasil |
 
 ## Pemeriksaan
 
@@ -187,3 +222,5 @@ Strategi prompting yang dipakai adalah memberikan PDF tugas dan konteks proyek y
 Penyesuaian pada hasil bantuan AI di tugas ini mencakup penggantian identitas contoh sesuai konfirmasi langsung pemilik proyek, pemindahan warna tombol ke atribut model `ItemHomepage`, serta pemilihan warna yang diuji kontrasnya terhadap teks putih. Pengujian profil dan layout juga disesuaikan agar memakai nama lengkap, bukan data contoh tutorial. Perubahan mix manual dan dibantu AI Codex.
 
 Log chat yang disertakan: [percakapan ChatGPT](https://chatgpt.com/s/cx_6afa76f5fab08191bb0b49500c93a199).
+
+Bantuan AI pada Tutorial 09 mencakup refactoring direktori, migrasi impor Material, implementasi drawer dan form, serta pengujian navigasi dan reset input. Log chat yang dicantumkan di atas tetap menjadi tautan disclosure yang dipilih pemilik proyek.
