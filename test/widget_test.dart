@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myportofolio_mobile/main.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
+import 'package:myportofolio_mobile/screens/menu.dart';
+import 'package:myportofolio_mobile/screens/project_form.dart';
 
 void main() {
   testWidgets('Setiap tombol punya warna berbeda dengan teks yang kontras', (
@@ -61,6 +63,16 @@ void main() {
 
       expect(find.text('Kamu telah menekan tombol $action!'), findsOneWidget);
       expect(find.byType(SnackBar), findsOneWidget);
+      if (action == 'Tambah Proyek') {
+        expect(find.byType(ProjectFormPage), findsOneWidget);
+        expect(
+          Navigator.of(tester.element(find.byType(ProjectFormPage))).canPop(),
+          isTrue,
+        );
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.byType(MyHomePage), findsOneWidget);
+      }
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
     }
@@ -84,6 +96,7 @@ void main() {
         find.text('Kamu telah menekan tombol Tambah Proyek!'),
         findsOneWidget,
       );
+      expect(find.byType(ProjectFormPage), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
