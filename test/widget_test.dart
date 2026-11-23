@@ -12,8 +12,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     final cards = tester.widgetList<ItemCard>(find.byType(ItemCard)).toList();
 
-    expect(cards.length, 3);
-    expect(cards.map((card) => card.item.color).toSet().length, 3);
+    expect(cards.length, 4);
+    expect(cards.map((card) => card.item.color).toSet().length, 4);
     for (final card in cards) {
       final material = tester.widget<Material>(
         find.descendant(
@@ -43,6 +43,7 @@ void main() {
       'Selamat datang di portofolio Danar Iqbal Abi Zaidan S!',
       'Lihat Proyek',
       'Tambah Proyek',
+      'Tambah Foto Gallery',
       'Logout',
     ]) {
       expect(find.text(text), findsOneWidget);

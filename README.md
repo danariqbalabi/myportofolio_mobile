@@ -1,106 +1,120 @@
 # MyPortfolio Mobile
 
-Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berbasis Platform, Gasal 2026/2027. Proyek ini melanjutkan Tutorial 08 dan Tugas 7 dengan navigasi, drawer, serta form proyek pada Tutorial 09.
+Aplikasi portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograman Berbasis Platform, Semester Gasal 2026/2027. Pengembangan dimulai dari halaman profil dan menu pada Tutorial 08, dilanjutkan navigasi dan formulir proyek pada Tutorial 09, serta formulir Gallery pada Tugas 8.
 
 | Identitas | Keterangan |
 | --- | --- |
-| Nama | Danar Iqbal Abi Zaidan S |
+| Nama pada aplikasi | Danar Iqbal Abi Zaidan S |
 | NPM | 2506534371 |
 | Kelas | PBP-A |
-| Repository | [myportofolio_mobile](https://github.com/danariqbalabi/myportofolio_mobile) |
-| Branch Tugas 7 | `tugas/7-portofolio-pribadi` |
-| Branch Tutorial 09 | `tutorial/09-navigasi-form` |
+| Repositori | [myportofolio_mobile](https://github.com/danariqbalabi/myportofolio_mobile) |
+| Branch Tugas 8 | `tugas/8-form-gallery` |
 
-## Fitur
+## Fitur aplikasi
 
-- Tiga `InfoCard` di bagian atas untuk NPM, Name, dan Class.
-- Sambutan dengan nama pemilik portofolio.
-- Tiga kartu aksi dengan ikon, efek sentuh, dan warna yang berbeda.
-- Pesan SnackBar yang sesuai dengan tombol yang ditekan.
-- Halaman bisa digulir supaya tetap bisa digunakan di layar kecil dan landscape.
-- Teks putih pada kartu aksi memakai latar yang kontras; rasio kontrasnya ikut diperiksa lewat tes.
+- Tiga kartu identitas untuk NPM, nama, dan kelas, beserta sambutan personal.
+- Empat kartu aksi dengan ikon, warna berbeda, dan SnackBar sesuai tombol yang ditekan.
+- Drawer bersama untuk Home, Add Project, dan Tambah Foto Gallery.
+- Form proyek dengan validasi dan dialog ringkasan.
+- Form Gallery dengan validasi judul, tahun, gambar, kategori, dan lokasi, serta input caption dan featured.
+- Halaman dan dialog yang dapat digulir, dengan menu dua kolom pada layar kurang dari 400 piksel.
 
-| Menu | Ikon | Warna | Pesan saat ditekan |
-| --- | --- | --- | --- |
-| Lihat Proyek | Folder | Biru `#1D4ED8` | Kamu telah menekan tombol Lihat Proyek! |
-| Tambah Proyek | Add circle | Hijau `#047857` | Kamu telah menekan tombol Tambah Proyek! |
-| Logout | Logout | Merah `#B91C1C` | Kamu telah menekan tombol Logout! |
+| Kartu aksi | Warna | Perilaku |
+| --- | --- | --- |
+| Lihat Proyek | Biru `#1D4ED8` | Menampilkan SnackBar |
+| Tambah Proyek | Hijau `#047857` | Menampilkan SnackBar dan membuka form proyek |
+| Tambah Foto Gallery | Ungu `#7E22CE` | Menampilkan SnackBar dan membuka form Gallery |
+| Logout | Merah `#B91C1C` | Menampilkan SnackBar |
 
-Pada Tutorial 09, kartu Tambah Proyek menampilkan SnackBar lalu membuka form dengan `Navigator.push`. Drawer menyediakan menu Home dan Add Project melalui `Navigator.pushReplacement`. Form memvalidasi nama dan deskripsi, menyediakan lima kategori, serta menerima teknologi dan tautan opsional. Tombol Save menampilkan ringkasan seluruh input dalam dialog. Tombol OK menutup dialog dan mereset semua isian beserta kategori ke Web Development. Data diproses sementara selama halaman aktif.
+Pada tahap ini, isian formulir ditampilkan dalam dialog dan dikelola selama halaman aktif. Integrasi penyimpanan ke API Django merupakan tahap pengembangan berikutnya.
 
 ## Setup dan menjalankan
 
-Prasyarat: Git, Flutter SDK, serta Dart yang memenuhi `pubspec.yaml` (`^3.13.5`). Untuk target web siapkan Chrome; untuk Android siapkan Android SDK beserta emulator atau perangkat dengan USB debugging.
+Siapkan Git, Flutter SDK yang kompatibel dengan dependensi proyek, serta Dart sesuai batas SDK di `pubspec.yaml` (`^3.13.5`). Target web menggunakan Chrome. Target Android memerlukan Android SDK dan emulator atau perangkat dengan USB debugging.
 
 ```sh
 git clone https://github.com/danariqbalabi/myportofolio_mobile.git
 cd myportofolio_mobile
-git switch tutorial/09-navigasi-form
+git switch tugas/8-form-gallery
 flutter pub get
 flutter doctor
 flutter run -d chrome
 ```
 
-Kalau proyek sudah ada secara lokal, cukup pindah ke branch tugas, jalankan `flutter pub get`, lalu `flutter run -d chrome`. Untuk Android, cari ID perangkat lewat `flutter devices`, kemudian jalankan:
+Untuk salinan lokal yang sudah tersedia, pindah ke branch tersebut dan jalankan `flutter pub get` sebelum menjalankan aplikasi. Untuk Android, lihat perangkat yang tersedia, lalu gunakan ID perangkat tujuan.
 
 ```sh
+flutter devices
 flutter run -d <device-id>
 ```
+
+Impor Material aplikasi menggunakan `package:material_ui/material_ui.dart`, dengan dependensi `material_ui` tercantum di `pubspec.yaml` dan versi hasil resolusi disimpan di `pubspec.lock`.
 
 ## Struktur proyek
 
 ```text
 lib/
-  main.dart          # entry point, MaterialApp, dan tema
+  main.dart                # Entry point, MaterialApp, dan tema
   screens/
-    menu.dart          # MyHomePage, InfoCard, dan ItemHomepage
-    project_form.dart  # ProjectFormPage dan state formulir
+    menu.dart              # MyHomePage, InfoCard, dan ItemHomepage
+    project_form.dart      # Form proyek dari Tutorial 09
+    gallery_form.dart      # Form Gallery dari Tugas 8
   widgets/
-    left_drawer.dart   # drawer dengan navigasi pengganti route
-    project_card.dart  # ItemCard dan navigasi ke formulir
+    left_drawer.dart       # Drawer bersama dan navigasi antarhalaman
+    project_card.dart      # ItemCard, SnackBar, dan navigasi kartu
 test/
-  widget_test.dart       # profil, warna/kontras, SnackBar, dan navigasi kartu
-  project_form_test.dart # drawer, validasi, dialog, reset, dan layout form
+  widget_test.dart         # Identitas, warna, SnackBar, dan layout menu
+  project_form_test.dart   # Navigasi, validasi, dialog, dan reset form proyek
+  gallery_form_test.dart   # Navigasi, validasi, dialog, dan layout form Gallery
 ```
 
-`ItemHomepage` menyimpan nama, ikon, dan warna sebagai data. `ItemCard` tinggal membaca `item.color`, sehingga tidak perlu rangkaian `if-else` untuk menentukan warna berdasarkan nama tombol.
+`ItemHomepage` menyimpan nama, ikon, dan warna setiap kartu. `ItemCard` menggunakan `item.color` sebagai latar. Kedua halaman formulir memakai komponen `LeftDrawer` yang sama dengan beranda.
 
 ## Progres mingguan
 
 | Tahap | Perubahan | Branch |
 | --- | --- | --- |
 | Tutorial 08 | Setup Flutter, pemisahan halaman, tema, kartu profil contoh, dan SnackBar | `tutorial/08-basic-flutter` |
-| Tugas 7 | Identitas pribadi, warna unik tiap menu, pengujian, jawaban reflektif, dan AI disclosure | `tugas/7-portofolio-pribadi` |
-| Tutorial 09 | Drawer, form proyek, validasi, dialog ringkasan, navigasi, dan refactoring screens/widgets | `tutorial/09-navigasi-form` |
+| Tugas 7 | Identitas pribadi, warna menu, tes widget, dan jawaban reflektif | `tugas/7-portofolio-pribadi` |
+| Tutorial 09 | Drawer, form proyek, validasi, dialog, navigasi, dan direktori screens/widgets | `tutorial/09-navigasi-form` |
+| Tugas 8 | Form Gallery, validasi sesuai field, kartu dan drawer Gallery, serta tes interaksi | `tugas/8-form-gallery` |
 
-Tutorial 08 sudah digabungkan ke `main`. Pengerjaan Tugas 7 disimpan di branch tersendiri dengan commit dan push bertahap agar progresnya bisa ditelusuri.
+### Tutorial 09
 
-## Tutorial 09
+Form proyek menerima nama, deskripsi, kategori, teknologi, dan tautan. Nama dan deskripsi wajib diisi dan menolak isian yang hanya berisi spasi. Kategori yang tersedia adalah Web Development, Mobile Development, Machine Learning, Data Science, dan Other.
 
-Branch `tutorial/09-navigasi-form` melanjutkan kode Tugas 7. Pengerjaan dipisah menjadi commit refactoring dan migrasi Material, drawer beserta form, navigasi kartu, lalu dokumentasi.
+Kartu Tambah Proyek memakai `Navigator.push()` sehingga Back dapat kembali ke beranda. Drawer memakai `Navigator.pushReplacement()` setelah drawer ditutup. Save menampilkan ringkasan input. Tombol OK pada dialog proyek mengosongkan form dan mengembalikan kategori ke Web Development. Menutup dialog melalui Back mempertahankan isian.
 
-Alur mencoba fitur melalui aplikasi sebagai berikut.
+### Implementasi Tugas 8
 
-1. Jalankan aplikasi dan tekan kartu Tambah Proyek. Form terbuka di atas beranda sehingga tombol Back sistem dapat kembali ke beranda.
-2. Tekan Save saat nama dan deskripsi kosong untuk melihat validasi. Isian yang hanya berisi spasi juga ditolak.
-3. Isi nama, deskripsi, kategori, teknologi, dan tautan. Tekan Save untuk melihat ringkasan kelima input.
-4. Tekan OK. Isian teks kembali kosong dan kategori kembali ke Web Development. Menutup dialog lewat Back mempertahankan input agar bisa dilanjutkan.
-5. Buka drawer lewat ikon menu. Pilih Home atau Add Project untuk mengganti halaman aktif.
+`GalleryFormPage` menggunakan `StatefulWidget`, `Form`, dan `GlobalKey<FormState>`. Field mengikuti bagian Gallery pada portofolio Django.
 
-Kategori yang tersedia adalah Web Development, Mobile Development, Machine Learning, Data Science, dan Other. Teknologi serta tautan dapat dikosongkan.
+| Input | Widget | Aturan |
+| --- | --- | --- |
+| Judul | `TextFormField` | Wajib setelah trim, maksimal 255 karakter |
+| Tahun | `TextFormField` dengan keyboard angka | Wajib, angka bulat 2000-2100 |
+| Gambar | `TextFormField` dengan keyboard URL | Wajib, maksimal 500 karakter, URL HTTP/HTTPS dengan host atau path berkas di `/static/img/` |
+| Caption | `TextFormField` multiline | Opsional |
+| Kategori | `TextFormField` | Opsional, maksimal 100 karakter setelah trim |
+| Lokasi | `TextFormField` | Opsional, maksimal 255 karakter setelah trim |
+| Featured | `CheckboxListTile` | Pilihan Ya/Tidak, awalnya Tidak |
 
-Impor Material aplikasi memakai `package:material_ui/material_ui.dart` sesuai tutorial. Dependensi dikunci lewat `pubspec.lock`, dan seluruh referensi halaman mengikuti direktori `screens`/`widgets`. Panduan migrasi tersedia pada [paket resmi Material UI](https://pub.dev/packages/material_ui).
+Validasi gambar menolak spasi, skema selain HTTP/HTTPS, kredensial pada URL, path gambar kosong, serta segmen `.` atau `..` pada path statis. Tahun tetap divalidasi meskipun keyboard sudah diatur sebagai angka.
 
-Tes Tutorial 09 meliputi penggantian route melalui drawer, penambahan route melalui kartu dan kembali dengan Back, validasi input, kelengkapan dialog, reset kategori dan nilai internal, submit ulang, pembatalan dialog, serta layout portrait dan landscape kecil.
+Saat Simpan ditekan, `validate()` memeriksa seluruh validator. Jika valid, `save()` menjalankan `onSaved`, keyboard ditutup, dan `showDialog()` menampilkan seluruh isian melalui `AlertDialog`. Nilai opsional yang kosong ditampilkan sebagai tanda `-`. Tombol OK menutup dialog dan mempertahankan isian form Gallery.
 
-Hasil verifikasi Tutorial 09 pada 18 November 2026 tercatat berikut.
+Form memakai `Scaffold`, `AppBar`, `SafeArea`, `SingleChildScrollView`, `Padding`, dan `SizedBox`. Warna AppBar dan tombol Simpan diambil dari `Theme.of(context).colorScheme.primary`.
 
-| Pemeriksaan | Hasil |
-| --- | --- |
-| Formatter Dart | 7 berkas sudah sesuai format |
-| `flutter analyze` | No issues found |
-| `flutter test` | 11 tes lolos |
-| `flutter build web --no-wasm-dry-run -O1` | Berhasil |
+### Mencoba form Gallery
+
+1. Tekan kartu Tambah Foto Gallery di beranda. Form terbuka menggunakan `Navigator.push()`, sehingga Back perangkat dapat kembali ke beranda.
+2. Tekan Simpan dengan input kosong atau spasi. Pesan wajib diisi muncul pada judul, tahun, dan gambar.
+3. Coba tahun `1999`, `2101`, atau `2026.5`, gambar `javascript:alert(1)`, dan judul lebih dari 255 karakter. Kolom terkait harus menampilkan kesalahan.
+4. Isi judul, tahun yang valid, dan gambar seperti `https://example.com/foto.jpg` atau `/static/img/kampus.jpg`. Lengkapi field opsional dan ubah featured.
+5. Tekan Simpan dan periksa ketujuh nilai dalam dialog. Tekan OK untuk kembali ke form dengan isian yang sama.
+6. Ubah judul dan simpan kembali. Dialog harus menampilkan nilai terbaru.
+7. Buka drawer, pilih Home, lalu buka Gallery melalui opsi drawer. Uji juga Add Project untuk memeriksa navigasi antarkedua formulir.
+8. Pada layar selebar ponsel atau saat keyboard terbuka, gulir hingga tombol Simpan dapat ditekan. Saat menggunakan Chrome, opsi Home pada drawer menjadi jalur kembali ke beranda.
 
 ## Pemeriksaan
 
@@ -108,27 +122,27 @@ Hasil verifikasi Tutorial 09 pada 18 November 2026 tercatat berikut.
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
-flutter build web
 ```
 
-Tes widget memeriksa identitas pribadi dan ketiadaan data contoh Burhan, tiga warna unik yang benar-benar dipakai kartu, kontras teks minimal 4.5:1, pesan SnackBar setiap menu, serta interaksi pada layar 320 x 568 dan 568 x 320. Build web menghasilkan berkas di `build/web/`; folder hasil build tidak masuk Git.
+Hasil pemeriksaan Tugas 8 pada 23 November 2026 adalah `flutter analyze` dengan **No issues found** dan **19 tes widget lolos**. Tes mencakup navigasi kartu dan drawer, Back ke Home, penolakan input kosong/spasi, batas panjang dan tahun, format gambar, seluruh nilai dialog, isian yang bertahan setelah OK, submit ulang, serta layar 320 x 568 dan 568 x 320 dengan simulasi keyboard.
 
-Hasil pemeriksaan Tugas 7 pada 16 November 2026:
+Pemeriksaan layout Tugas 8 tersebut menggunakan tes widget. Tampilan langsung di Chrome dan perangkat Android belum diverifikasi dalam pemeriksaan ini.
 
-| Pemeriksaan | Hasil |
+### Riwayat verifikasi
+
+| Tahap | Hasil pada saat pengerjaan |
 | --- | --- |
-| Dart formatter | Tidak ada perubahan format yang diperlukan |
-| `flutter analyze` | No issues found |
-| `flutter test` | 5 tes lolos |
-| Build web dengan optimasi ringan | Berhasil |
+| Tugas 7, 16 November 2026 | Formatter bersih, analyze bersih, 5 tes lolos, build web optimasi ringan berhasil |
+| Tutorial 09, 18 November 2026 | Formatter bersih pada 7 berkas, analyze bersih, 11 tes lolos, build web optimasi ringan berhasil |
+| Tugas 8, 23 November 2026 | Analyze bersih dan 19 tes lolos |
 
-Build release standar sempat gagal karena compiler kehabisan memori pada mesin pengerjaan. Build berhasil dijalankan ulang dengan perintah berikut tanpa mengubah kode aplikasi:
+Pada pengerjaan sebelumnya, build release standar mengalami kehabisan memori pada mesin lokal. Build web berhasil dengan optimasi yang lebih ringan.
 
 ```sh
 flutter build web --no-wasm-dry-run -O1
 ```
 
-Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run` melewati kompilasi uji WebAssembly. Preview visual di browser belum berhasil dijalankan karena runtime otomatisasi terkena keterbatasan paging file Windows; validasi layout saat ini mengandalkan tes widget.
+Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run` melewati kompilasi uji WebAssembly. Hasil build tersimpan di `build/web/` yang diabaikan Git.
 
 ## Pertanyaan reflektif
 
@@ -142,14 +156,14 @@ Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run`
 
    ```text
    MyApp
-   └── MaterialApp
-       └── MyHomePage
-           └── Scaffold
-               ├── AppBar → Text
-               └── SafeArea → SingleChildScrollView → Column
-                   ├── Row → Expanded → InfoCard
-                   ├── Text (sambutan)
-                   └── GridView → ItemCard
+   +-- MaterialApp
+       +-- MyHomePage
+           +-- Scaffold
+               |-- AppBar -> Text
+               +-- SafeArea -> SingleChildScrollView -> Column
+                   |-- Row -> Expanded -> InfoCard
+                   |-- Text (sambutan)
+                   +-- GridView -> ItemCard
    ```
 
    Rujukan: [penjelasan widget dan komposisi UI Flutter](https://docs.flutter.dev/ui).
@@ -213,14 +227,60 @@ Opsi `-O1` mengurangi tingkat optimasi JavaScript, sedangkan `--no-wasm-dry-run`
 
    Full restart menghentikan lalu menjalankan aplikasi lagi beserta proses build yang diperlukan. Ini diperlukan untuk perubahan kode native Kotlin/Java/Swift/Objective-C atau konfigurasi native/plugin yang membutuhkan kompilasi ulang. Kalau ada compilation error, kode harus diperbaiki dulu; menekan reload atau restart saja tidak menyelesaikan error tersebut. Rujukan: [hot reload, hot restart, dan full restart](https://docs.flutter.dev/tools/hot-reload).
 
+### Tugas 8
+
+1. **Perbedaan Navigator.push(), Navigator.pushReplacement(), dan Navigator.pop()**
+
+   `Navigator.push()` menambahkan halaman di atas tumpukan route. Pada kartu Tambah Foto Gallery, metode ini membuka `GalleryFormPage` melalui `MaterialPageRoute`. Halaman Home tetap berada di bawahnya, sehingga Back perangkat dapat kembali ke Home.
+
+   `Navigator.pushReplacement()` mengganti route aktif dengan route baru. Drawer memakai cara ini untuk membuka Home, Add Project, atau Gallery. Saat Home dipilih dari form, kode mengambil Navigator, memanggil `pop()` untuk menutup drawer, kemudian `pushReplacement()` untuk mengganti halaman form dengan `MyHomePage`.
+
+   `Navigator.pop()` menutup route teratas. Pada tombol OK dialog Gallery, metode ini menutup dialog sehingga form terlihat kembali dengan input yang tetap ada.
+
+2. **Peran Scaffold, AppBar, Drawer, dan konsistensi tema**
+
+   `Scaffold` menyediakan kerangka halaman, `AppBar` menampilkan judul, dan `Drawer` menyediakan navigasi bersama. Home, form proyek, serta form Gallery memakai `LeftDrawer` yang sama sehingga pilihan menu dan alur navigasinya konsisten.
+
+   Tema utama didefinisikan pada `MaterialApp` dengan `ColorScheme.fromSeed`. AppBar Home dan AppBar Gallery sama-sama mengambil `Theme.of(context).colorScheme.primary`. Tombol Simpan Gallery memakai warna primary yang sama, dengan teks putih.
+
+3. **Alasan memilih layout formulir**
+
+   Field disusun vertikal menggunakan `Column` agar label, input, dan pesan error mudah dibaca secara berurutan. `Padding` memberi jarak dari tepi layar, sedangkan `SizedBox` memisahkan field agar tidak terlalu rapat. Caption menggunakan beberapa baris agar teks yang lebih panjang tetap nyaman diisi.
+
+   `SafeArea` menjaga konten dari area sistem. `SingleChildScrollView` memungkinkan seluruh field dan tombol Simpan dijangkau ketika layar sempit, landscape, atau keyboard mengurangi ruang yang tersedia. Konten dialog juga dapat digulir ketika ringkasan lebih tinggi daripada ruang layar.
+
+4. **Peran GlobalKey<FormState>, validator, dan validate()**
+
+   `GlobalKey<FormState>` menghubungkan kode tombol Simpan dengan state dari `Form`. Setiap `validator` mengembalikan pesan jika input tidak valid, atau `null` jika input diterima. Pemanggilan `_formKey.currentState!.validate()` memeriksa seluruh field dan menampilkan pesan pada kolom yang gagal.
+
+   Sebagai contoh, judul `"   "` ditolak setelah `trim()` karena kosong, dan tahun `2101` ditolak karena melewati batas 2100. Keyboard angka hanya membantu cara memasukkan data. Pengguna masih dapat menempelkan nilai yang salah, sehingga aturan tetap harus diperiksa oleh validator.
+
+   Setelah validasi berhasil, `save()` memanggil `onSaved` untuk mengambil nilai setiap field. Nilai tersebut kemudian ditampilkan dalam dialog, termasuk featured yang dikelola melalui `setState()`.
+
 ## AI disclosure
 
-Pengerjaan proyek ini dibantu **ChatGPT/Codex**. Bantuan AI dipakai untuk membaca ketentuan tugas, mengubah kode Flutter, menyusun tes widget, membuat draf jawaban reflektif dan dokumentasi, serta menjalankan alur commit dan push bertahap.
+Proyek ini dikerjakan dengan bantuan **ChatGPT/Codex**. Rincian bantuan ditulis per tahap agar kontribusi AI dan keputusan pemilik proyek dapat ditelusuri melalui percakapan serta riwayat Git.
 
-Strategi prompting yang dipakai adalah memberikan PDF tugas dan konteks proyek yang sudah ada, lalu meminta langkah implementasi di branch terpisah. Ketentuan tugas dicocokkan dengan implementasi, lalu hasilnya diperiksa menggunakan formatter, `flutter analyze`, tes widget, dan build web.
+### Tugas 7 dan Tutorial 09
 
-Penyesuaian pada hasil bantuan AI di tugas ini mencakup penggantian identitas contoh sesuai konfirmasi langsung pemilik proyek, pemindahan warna tombol ke atribut model `ItemHomepage`, serta pemilihan warna yang diuji kontrasnya terhadap teks putih. Pengujian profil dan layout juga disesuaikan agar memakai nama lengkap, bukan data contoh tutorial. Perubahan mix manual dan dibantu AI Codex.
+Bantuan AI pada tahap sebelumnya mencakup membaca ketentuan tugas, perubahan kode Flutter, refactoring direktori, migrasi impor Material, implementasi drawer dan form proyek, penyusunan tes widget, draf jawaban reflektif, dokumentasi, serta commit dan push.
 
-Log chat yang disertakan: [percakapan ChatGPT](https://chatgpt.com/s/cx_6afa76f5fab08191bb0b49500c93a199).
+Identitas, pemilihan warna, dan arah tampilan disesuaikan dengan keputusan pemilik proyek. Pengerjaan menggabungkan perubahan manual dan bantuan AI. Log percakapan tahap sebelumnya tersedia pada [log Tugas 7 dan Tutorial 09](https://chatgpt.com/s/cx_6afa76f5fab08191bb0b49500c93a199).
 
-Bantuan AI pada Tutorial 09 mencakup refactoring direktori, migrasi impor Material, implementasi drawer dan form, serta pengujian navigasi dan reset input. Log chat yang dicantumkan di atas tetap menjadi tautan disclosure yang dipilih pemilik proyek.
+### Tugas 8
+
+Bantuan ChatGPT/Codex dalam percakapan ini mencakup hal berikut.
+
+- Membaca PDF Tugas 8 dan memetakan persyaratannya ke bagian Gallery.
+- Membahas field, aturan validasi, navigasi kartu dan drawer, serta urutan pengerjaan.
+- Meninjau implementasi yang sudah dikerjakan pemilik proyek dan menjalankan `flutter analyze` serta tes widget yang tersedia.
+- Merapikan README, menyusun draf empat jawaban reflektif, dan menjelaskan perilaku implementasi berdasarkan kode.
+- Menghapus aplikasi contoh `form_sample` sesuai permintaan, serta melakukan commit dan push dokumentasi.
+
+Pemilik proyek melaporkan telah mengerjakan form Gallery, validasi, dialog, tema, layout, dan navigasi sebelum meminta pemeriksaan akhir. Pemeriksaan pada percakapan ini membaca implementasi tersebut serta menjalankan tes yang sudah tersedia.
+
+Strategi prompting dimulai dari memberikan PDF dan konteks kode, menanyakan perubahan yang dibutuhkan, melaporkan bagian yang telah selesai, kemudian meminta pemeriksaan sebelum penulisan README. Dokumentasi disesuaikan dengan perilaku aktual kode dan hasil pemeriksaan lokal.
+
+Penjelasan AI perlu dicocokkan dengan kode karena dapat keliru tentang versi SDK, detail navigasi, atau cakupan pengujian. Hasil tes widget membantu memeriksa perilaku dan layout dalam kondisi yang diuji. Pengujian tersebut belum mencakup semua perangkat fisik. Jawaban reflektif ini merupakan draf berbantuan AI yang perlu dipahami dan ditinjau pemilik proyek.
+
+Log percakapan yang diberikan pemilik proyek tersedia pada [log Tugas 8](https://chatgpt.com/s/cx_6b03bca8f4448191b6374622770ba673).

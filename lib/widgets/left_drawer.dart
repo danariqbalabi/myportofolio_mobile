@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
+import 'package:myportofolio_mobile/screens/gallery_form.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -57,6 +58,19 @@ class LeftDrawer extends StatelessWidget {
               navigator.pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const ProjectFormPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_photo_alternate_outlined),
+            title: const Text('Tambah Foto Gallery'),
+            onTap: () {
+              final navigator = Navigator.of(context);
+              navigator.pop();
+              navigator.pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const GalleryFormPage(),
                 ),
               );
             },
