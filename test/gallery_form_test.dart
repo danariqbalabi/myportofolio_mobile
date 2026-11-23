@@ -1,6 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/gallery_form.dart';
+import 'package:myportofolio_mobile/main.dart';
+import 'package:myportofolio_mobile/screens/menu.dart';
+import 'package:myportofolio_mobile/screens/project_form.dart';
+import 'package:myportofolio_mobile/widgets/project_card.dart';
 
 Future<void> saveGallery(WidgetTester tester) async {
   await tester.ensureVisible(find.text('Simpan'));
@@ -9,6 +13,77 @@ Future<void> saveGallery(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('Drawer membuka Gallery dari Home dan form proyek', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Tambah Foto Gallery'));
+    await tester.pumpAndSettle();
+    expect(find.byType(GalleryFormPage), findsOneWidget);
+    expect(
+      Navigator.of(tester.element(find.byType(GalleryFormPage))).canPop(),
+      isFalse,
+    );
+    expect(
+      tester.state<ScaffoldState>(find.byType(Scaffold)).isDrawerOpen,
+      isFalse,
+    );
+
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Add Project'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ProjectFormPage), findsOneWidget);
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Tambah Foto Gallery'));
+    await tester.pumpAndSettle();
+    expect(find.byType(GalleryFormPage), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ListTile, 'Home'));
+    await tester.pumpAndSettle();
+    expect(find.byType(MyHomePage), findsOneWidget);
+    expect(
+      Navigator.of(tester.element(find.byType(MyHomePage))).canPop(),
+      isFalse,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  for (final size in [const Size(320, 568), const Size(568, 320)]) {
+    testWidgets(
+      'Kartu Gallery membuka form dan Back kembali ke Home di $size',
+      (tester) async {
+        tester.view.physicalSize = size;
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        await tester.pumpWidget(const MyApp());
+        final card = find.widgetWithText(ItemCard, 'Tambah Foto Gallery');
+        await tester.ensureVisible(card);
+        await tester.tap(card);
+        await tester.pumpAndSettle();
+        expect(find.byType(GalleryFormPage), findsOneWidget);
+        expect(
+          Navigator.of(tester.element(find.byType(GalleryFormPage))).canPop(),
+          isTrue,
+        );
+        expect(
+          find.text('Kamu telah menekan tombol Tambah Foto Gallery!'),
+          findsOneWidget,
+        );
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.byType(MyHomePage), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
   testWidgets('Form menolak input wajib kosong atau spasi', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: GalleryFormPage()));
     for (var index = 0; index < 3; index++) {
