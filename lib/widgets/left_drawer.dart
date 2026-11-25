@@ -1,4 +1,8 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/screens/project_list_screen.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/gallery_form.dart';
@@ -8,6 +12,7 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = context.watch<AuthState>().isLoggedIn;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -52,7 +57,8 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Add Project'),
-            onTap: () {
+            onTap: () async {
+              if (!await ensureLoggedIn(context) || !context.mounted) return;
               final navigator = Navigator.of(context);
               navigator.pop();
               navigator.pushReplacement(
@@ -73,6 +79,29 @@ class LeftDrawer extends StatelessWidget {
                   builder: (context) => const GalleryFormPage(),
                 ),
               );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.folder_outlined),
+            title: const Text('Lihat Proyek'),
+            onTap: () {
+              final navigator = Navigator.of(context);
+              navigator.pop();
+              navigator.pushReplacement(
+                MaterialPageRoute(builder: (_) => const ProjectListScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(isLoggedIn ? Icons.logout : Icons.login),
+            title: Text(isLoggedIn ? 'Logout' : 'Login'),
+            onTap: () async {
+              if (isLoggedIn) {
+                await logoutWithFeedback(context);
+              } else {
+                await ensureLoggedIn(context);
+              }
+              if (context.mounted) Navigator.pop(context);
             },
           ),
         ],

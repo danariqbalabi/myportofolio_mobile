@@ -1,4 +1,6 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/screens/project_list_screen.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/gallery_form.dart';
@@ -16,7 +18,7 @@ class ItemCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -24,7 +26,18 @@ class ItemCard extends StatelessWidget {
                 content: Text('Kamu telah menekan tombol ${item.name}!'),
               ),
             );
+          if (item.name == 'Lihat Proyek') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProjectListScreen()),
+            );
+          }
+          if (item.name == 'Logout') {
+            await logoutWithFeedback(context);
+            return;
+          }
           if (item.name == 'Tambah Proyek') {
+            if (!await ensureLoggedIn(context) || !context.mounted) return;
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProjectFormPage()),
