@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myportofolio_mobile/main.dart';
+
+import 'support/test_app.dart';
+
 import 'package:myportofolio_mobile/widgets/project_card.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
@@ -9,7 +11,7 @@ void main() {
   testWidgets('Setiap tombol punya warna berbeda dengan teks yang kontras', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(testApp());
     final cards = tester.widgetList<ItemCard>(find.byType(ItemCard)).toList();
 
     expect(cards.length, 4);
@@ -30,7 +32,7 @@ void main() {
   testWidgets('Beranda menampilkan identitas pribadi dan semua menu', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(testApp());
 
     for (final text in [
       'MyPortfolio',
@@ -53,30 +55,15 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Pesan SnackBar sesuai tombol yang ditekan', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(const MyApp());
-
-    for (final action in ['Lihat Proyek', 'Tambah Proyek', 'Logout']) {
-      await tester.tap(find.text(action));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Kamu telah menekan tombol $action!'), findsOneWidget);
-      expect(find.byType(SnackBar), findsOneWidget);
-      if (action == 'Tambah Proyek') {
-        expect(find.byType(ProjectFormPage), findsOneWidget);
-        expect(
-          Navigator.of(tester.element(find.byType(ProjectFormPage))).canPop(),
-          isTrue,
-        );
-        await tester.binding.handlePopRoute();
-        await tester.pumpAndSettle();
-        expect(find.byType(MyHomePage), findsOneWidget);
-      }
-      await tester.pump(const Duration(seconds: 5));
-      await tester.pumpAndSettle();
-    }
+  testWidgets('Lihat Proyek membuka daftar publik', (tester) async {
+    await tester.pumpWidget(testApp(token: null));
+    await tester.tap(find.text('Lihat Proyek'));
+    await tester.pumpAndSettle();
+    expect(find.text('Daftar Proyek'), findsOneWidget);
+    expect(find.text('Belum ada proyek.'), findsOneWidget);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byType(MyHomePage), findsOneWidget);
   });
 
   for (final size in [const Size(320, 568), const Size(568, 320)]) {
@@ -88,7 +75,7 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(const MyApp());
+      await tester.pumpWidget(testApp());
       await tester.ensureVisible(find.text('Tambah Proyek'));
       await tester.tap(find.text('Tambah Proyek'));
       await tester.pumpAndSettle();

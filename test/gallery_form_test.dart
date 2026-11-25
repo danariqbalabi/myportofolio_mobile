@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/gallery_form.dart';
-import 'package:myportofolio_mobile/main.dart';
+
+import 'support/test_app.dart';
+
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
@@ -16,7 +18,7 @@ void main() {
   testWidgets('Drawer membuka Gallery dari Home dan form proyek', (
     tester,
   ) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(testApp());
     await tester.tap(find.byTooltip('Open navigation menu'));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(ListTile, 'Tambah Foto Gallery'));
@@ -62,7 +64,7 @@ void main() {
         tester.view.devicePixelRatio = 1;
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
-        await tester.pumpWidget(const MyApp());
+        await tester.pumpWidget(testApp());
         final card = find.widgetWithText(ItemCard, 'Tambah Foto Gallery');
         await tester.ensureVisible(card);
         await tester.tap(card);
@@ -85,7 +87,7 @@ void main() {
   }
 
   testWidgets('Form menolak input wajib kosong atau spasi', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: GalleryFormPage()));
+    await tester.pumpWidget(testApp(home: const GalleryFormPage()));
     for (var index = 0; index < 3; index++) {
       await tester.enterText(find.byType(TextFormField).at(index), '   ');
     }
@@ -99,7 +101,7 @@ void main() {
   testWidgets('Validator memeriksa panjang tahun dan format gambar', (
     tester,
   ) async {
-    await tester.pumpWidget(const MaterialApp(home: GalleryFormPage()));
+    await tester.pumpWidget(testApp(home: const GalleryFormPage()));
     final fields = tester
         .widgetList<TextFormField>(find.byType(TextFormField))
         .toList();
@@ -143,7 +145,7 @@ void main() {
   testWidgets('Dialog menampilkan semua isian dan OK kembali ke form', (
     tester,
   ) async {
-    await tester.pumpWidget(const MaterialApp(home: GalleryFormPage()));
+    await tester.pumpWidget(testApp(home: const GalleryFormPage()));
     final values = [
       ' Foto kampus ',
       '2026',
@@ -193,7 +195,7 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       addTearDown(tester.view.resetViewInsets);
-      await tester.pumpWidget(const MaterialApp(home: GalleryFormPage()));
+      await tester.pumpWidget(testApp(home: const GalleryFormPage()));
       await tester.enterText(find.byType(TextFormField).at(0), 'Foto');
       await tester.enterText(find.byType(TextFormField).at(1), '2000');
       await tester.enterText(
